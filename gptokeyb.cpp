@@ -1448,19 +1448,22 @@ void setupFakeKeyboardMouseDevice(uinput_user_dev& device, int fd)
   ioctl(fd, UI_SET_EVBIT, EV_KEY);
   ioctl(fd, UI_SET_EVBIT, EV_SYN);
 
-  // Fake mouse
-  ioctl(fd, UI_SET_EVBIT, EV_REL);
-  ioctl(fd, UI_SET_RELBIT, REL_X);
-  ioctl(fd, UI_SET_RELBIT, REL_Y);
-  ioctl(fd, UI_SET_KEYBIT, BTN_LEFT);
-  ioctl(fd, UI_SET_KEYBIT, BTN_RIGHT);
+  // Fake mouse (if configured)
+  if (config.left_analog_as_mouse || config.right_analog_as_mouse) {
+    ioctl(fd, UI_SET_EVBIT, EV_REL);
+    ioctl(fd, UI_SET_RELBIT, REL_X);
+    ioctl(fd, UI_SET_RELBIT, REL_Y);
+    ioctl(fd, UI_SET_KEYBIT, BTN_LEFT);
+    ioctl(fd, UI_SET_KEYBIT, BTN_RIGHT);
+  }
 }
 
 void setupFakeXbox360Device(uinput_user_dev& device, int fd)
 {
   strncpy(device.name, "Microsoft X-Box 360 pad", UINPUT_MAX_NAME_SIZE);
-  device.id.vendor = 0x045e;  /* sample vendor */
-  device.id.product = 0x028e; /* sample product */
+  device.id.vendor = 0x045e;  /* Microsoft */
+  device.id.product = 0x028e; /* X-Box 360 */
+  device.id.version = 0x0104; /* Revision with proper dpad direction */
 
   if (
     ioctl(fd, UI_SET_EVBIT, EV_KEY) || ioctl(fd, UI_SET_EVBIT, EV_SYN) ||
@@ -1609,11 +1612,11 @@ bool handleEvent(const SDL_Event& event)
         // Fake Xbox360 mode
         switch (event.cbutton.button) {
           case SDL_CONTROLLER_BUTTON_A:
-            emitKey(BTN_A, is_pressed);
+            emitKey(BTN_B, is_pressed);
             break;
 
           case SDL_CONTROLLER_BUTTON_B:
-            emitKey(BTN_B, is_pressed);
+            emitKey(BTN_A, is_pressed);
             break;
 
           case SDL_CONTROLLER_BUTTON_X:
