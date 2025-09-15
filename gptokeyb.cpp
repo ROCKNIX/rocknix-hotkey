@@ -1448,12 +1448,14 @@ void setupFakeKeyboardMouseDevice(uinput_user_dev& device, int fd)
   ioctl(fd, UI_SET_EVBIT, EV_KEY);
   ioctl(fd, UI_SET_EVBIT, EV_SYN);
 
-  // Fake mouse
-  ioctl(fd, UI_SET_EVBIT, EV_REL);
-  ioctl(fd, UI_SET_RELBIT, REL_X);
-  ioctl(fd, UI_SET_RELBIT, REL_Y);
-  ioctl(fd, UI_SET_KEYBIT, BTN_LEFT);
-  ioctl(fd, UI_SET_KEYBIT, BTN_RIGHT);
+  // Fake mouse (if configured)
+  if (config.left_analog_as_mouse || config.right_analog_as_mouse) {
+    ioctl(fd, UI_SET_EVBIT, EV_REL);
+    ioctl(fd, UI_SET_RELBIT, REL_X);
+    ioctl(fd, UI_SET_RELBIT, REL_Y);
+    ioctl(fd, UI_SET_KEYBIT, BTN_LEFT);
+    ioctl(fd, UI_SET_KEYBIT, BTN_RIGHT);
+  }
 }
 
 void setupFakeXbox360Device(uinput_user_dev& device, int fd)
