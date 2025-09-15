@@ -1609,11 +1609,11 @@ bool handleEvent(const SDL_Event& event)
         // Fake Xbox360 mode
         switch (event.cbutton.button) {
           case SDL_CONTROLLER_BUTTON_A:
-            emitKey(BTN_A, is_pressed);
+            emitKey(BTN_B, is_pressed);
             break;
 
           case SDL_CONTROLLER_BUTTON_B:
-            emitKey(BTN_B, is_pressed);
+            emitKey(BTN_A, is_pressed);
             break;
 
           case SDL_CONTROLLER_BUTTON_X:
