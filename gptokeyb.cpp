@@ -1461,8 +1461,9 @@ void setupFakeKeyboardMouseDevice(uinput_user_dev& device, int fd)
 void setupFakeXbox360Device(uinput_user_dev& device, int fd)
 {
   strncpy(device.name, "Microsoft X-Box 360 pad", UINPUT_MAX_NAME_SIZE);
-  device.id.vendor = 0x045e;  /* sample vendor */
-  device.id.product = 0x028e; /* sample product */
+  device.id.vendor = 0x045e;  /* Microsoft */
+  device.id.product = 0x028e; /* X-Box 360 */
+  device.id.version = 0x0104; /* Revision with proper dpad direction */
 
   if (
     ioctl(fd, UI_SET_EVBIT, EV_KEY) || ioctl(fd, UI_SET_EVBIT, EV_SYN) ||
