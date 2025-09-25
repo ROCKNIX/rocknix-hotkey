@@ -2486,13 +2486,13 @@ int main(int argc, char* argv[])
       setupFakeXbox360Device(uidev, uinp_fd);
     } else {
       printf("Running in Fake Keyboard mode\n");
-      setupFakeKeyboardMouseDevice(uidev, uinp_fd);
-
+      
       // if we are in config mode, read the file
       if (config_mode) {
         printf("Using ConfigFile %s\n", config_file);
         readConfigFile(config_file);
       }
+
       // if we are in textinput mode, note the text preset
       if (textinputpreset_mode) {
         if (config.text_input_preset != NULL) {
@@ -2502,6 +2502,9 @@ int main(int argc, char* argv[])
             //textinputpreset_mode = false;   removed so that Enter key can be pressed
         }
       } 
+
+      // set up the fake keybard / mouse input devices
+      setupFakeKeyboardMouseDevice(uidev, uinp_fd);
     }
             // if we are in textinputinteractive mode, initialise the character set
     if (textinputinteractive_mode) {
